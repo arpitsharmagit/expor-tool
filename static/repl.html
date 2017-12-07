@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="x">
+<head>
+
+<link rel="stylesheet" type="text/css" href="/bower_components/codemirror/lib/codemirror.css">
+<link rel="stylesheet" type="text/css" href="/bower_components/codemirror/theme/blackboard.css">
+<style>
+  .CodeMirror {
+    height: 256px;
+  }
+  #output {
+    list-style-type: none;
+    padding: 1em;
+  }
+</style>
+
+</head>
+<body>
+
+  <section ng-controller="ReplController">
+    <div id="input" ui-codemirror="{ onLoad : replInputLoaded }"
+                    ui-codemirror-opts="inputOptions"></div>
+    <ul id="output" class="CodeMirror cm-s-blackboard">
+    </ul>
+  </section>
+
+  <script type="text/javascript" src="/bower_components/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="/bower_components/codemirror/lib/codemirror.js"></script>
+  <script type="text/javascript" src="/bower_components/codemirror/mode/javascript/javascript.js"></script>
+
+  <script type="text/javascript" src="/bower_components/angular/angular.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-ui-bootstrap-bower/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="/bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+
+  <script type="text/javascript" src="repl.js"></script>
+
+</body>
+</html>

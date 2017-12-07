@@ -1,0 +1,239 @@
+
+    <section class="panel panel-default tabbed-panel" ng-controller="ConfigCtrl">
+      <form class="form-horizontal" novalidate>
+
+        <div class="panel-heading" ng-click="isCollapsed = !isCollapsed">
+        	<h4>Migration</h4>
+        </div>
+        <div class="panel-body" collapse="isCollapsed">
+          <tabset justified="true">
+            <tab active="true">
+              <tab-heading>Configuration <i class="glyphicon small pull-right" ng-class="{
+                    'text-success glyphicon-ok': configForm.$valid,
+                    'text-warning glyphicon-asterisk': configForm.$invalid,
+                    'text-danger glyphicon-asterisk': configForm.$error.required
+                  }"></i>
+              </tab-heading>
+              <fieldset ng-form name="configForm">
+                <vb-input>
+                  <label>Save Folder</label>
+                  <!--<input type="text" ng-model="config.folder" name="folder">-->
+                  <div class="form-inline vb-input-field">
+
+                    <div class="input-group">
+                      <span class="file-result form-control btn-file" tooltip="{{config.db.folder}}">{{config.db.folder}}</span>
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="folder.setDataFolder()">Choose Save Folder</button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div>
+                </vb-input>
+                <input type="hidden" ng-model="config.db.folder" name="folder" required>
+                <vb-input>
+                  <label>SnS Content Folder</label>
+                  <div class="form-inline vb-input-field">
+
+                    <div class="input-group">
+                      <span class="file-result form-control btn-file" tooltip="{{config.options.backupFolder}}">{{config.options.backupFolder}}</span>
+
+                      <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="folder.setContentFolder()">Specify Folder</button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div>
+                </vb-input>
+                <input type="hidden" ng-model="config.options.backupFolder" name="folder" required>
+                <vb-input>
+                  <label>Debug Mode</label>
+                    <input type="checkbox" ng-model="config.debugMode" name="debugMode" ng-change="toggleDebugMode()">
+
+                </vb-input>
+                <vb-input>
+    							<label><div class="col-xs-1 text-center">
+                    <h3><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-hide="!waitingForResponse"></i></h3>
+                  </div></label>
+                  <button class="btn vb-input-field" ng-click="updateConfig()">Update</button>
+    						</vb-input>
+              </fieldset>
+            </tab>
+            <tab>
+              <tab-heading>Show and Share <i class="glyphicon small pull-right" ng-class="{
+                    'text-success glyphicon-ok': snsForm.$valid,
+                    'text-warning glyphicon-asterisk': snsForm.$invalid,
+                    'text-danger glyphicon-asterisk': snsForm.$error.required
+                  }"></i>
+              </tab-heading>
+              <fieldset ng-form name="snsForm">
+                <vb-input>
+    							<label>Url</label>
+    							<input type="text" ng-model="config.sns.url" name="snsUrl" placeholder="https://show-and-share.url" required>
+                  <label validation="required">
+    								This field is required
+    							</label>
+    						</vb-input>
+                <vb-input>
+    							<label>Username</label>
+    							<input type="text" ng-model="config.sns.username" name="snsUsername" required>
+                  <label validation="required">
+    								This field is required
+    							</label>
+    						</vb-input>
+                <vb-input>
+    							<label>Password</label>
+    							<input type="password" ng-model="config.sns.password" name="snsPassword" required>
+                  <label validation="required">
+    								This field is required
+    							</label>
+    						</vb-input>
+                <vb-input>
+    							<label>Proxy</label>
+    							<input type="text" ng-model="config.sns.proxy" name="snsProxy">
+    						</vb-input>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label>Start at Page</label>
+        							<input type="number" ng-model="config.sns.pageStartOffset" name="pageStart" min="0" max="5000" step="1">
+        						</vb-input>
+                  </div>
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label>Page Size</label>
+        							<input type="number" ng-model="config.sns.pageSize" name="pageSize" min="5" max="100" step="5">
+        						</vb-input>
+                  </div>
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label>Max Results</label>
+        							<input type="number" ng-model="config.sns.maxResults" name="maxResults" min="10" max="5000" step="10">
+        						</vb-input>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm12" style="text-align: center">{{exportRange()}}</div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-1 text-center">
+                    <h3><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-hide="!waitingForResponse"></i></h3>
+                  </div>
+                  <input type="hidden" ng-model="sns.validConnection" name="validConnection">
+                  <button class="btn vb-input-field" ng-click="updateConfig()">Update</button>
+                  <button class="btn vb-input-field" ng-click="sns.testConnection()" ng-class="{
+                    'btn-default': sns.validConnection,
+                    'btn-primary': !sns.validConnection
+                  }">Test Connection</button>
+
+                  <button class="btn btn-primary" type="button" ng-click="sns.start()" ng-disabled="!sns.validConnection || sns.active">Start Export</button>
+                  <button class="btn btn-primary" type="button" ng-click="sns.cancel()" ng-disabled="!sns.active">Cancel</button>
+
+                </div>
+              </fieldset>
+              <div class="" ng-if="sns.job">
+                <div class="col-xs-12">
+                  <vb-job job="sns.job"></vb-job>
+                </div>
+              </div>
+            </tab>
+            <tab>
+              <tab-heading>Rev <i class="glyphicon small pull-right" ng-class="{
+                    'text-success glyphicon-ok': revForm.$valid,
+                    'text-warning glyphicon-asterisk': revForm.$invalid,
+                    'text-danger glyphicon-asterisk': revForm.$error.required
+                  }"></i>
+              </tab-heading>
+              <fieldset ng-form name="revForm">
+                <vb-input>
+                  <label>Url</label>
+                  <input type="text" ng-model="config.rev.url" name="revUrl" placeholder="http://rev-instance.url" required>
+                  <label validation="required">
+                    This field is required
+                  </label>
+                </vb-input>
+                <vb-input>
+                  <label>Username</label>
+                  <input type="text" ng-model="config.rev.username" name="revUsername" required>
+                  <label validation="required">
+                    This field is required
+                  </label>
+                </vb-input>
+                <vb-input>
+                  <label>Password</label>
+                  <input type="password" ng-model="config.rev.password" name="revPassword" required>
+                  <label validation="required">
+                    This field is required
+                  </label>
+                </vb-input>
+                <!--
+                <vb-input>
+                  <label>Proxy</label>
+                  <input type="text" ng-model="config.rev.proxy" name="revProxy">
+                </vb-input>
+              -->
+                <div class="row">
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label>Batch Size</label>
+        							<input type="number" ng-model="config.options.batchSize" name="batchSize" min="1" max="100" step="1">
+        						</vb-input>
+                  </div>
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label>Preferred Resolution</label>
+        							<input type="number" ng-model="config.options.preferredWidth" name="preferredWidth" min="320" max="1920" step="20" placeholder="highest available">
+        						</vb-input>
+                  </div>
+                  <div class="col-sm-4">
+                    <vb-input>
+        							<label style="min-width: 18em">Username for unknown authors</label>
+        							<input type="text" ng-model="config.options.defaultAuthor" name="defaultAuthor" placeholder="Current User">
+        						</vb-input>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-2"></div>
+                  <label class="checkbox-inline col-xs-2">
+                    <input type="checkbox" ng-model="config.options.ignoreFlags.categories" name="ignoreCategories"> Skip Categories
+                  </label>
+                  <label class="checkbox-inline col-xs-2">
+                    <input type="checkbox" ng-model="config.options.ignoreFlags.image" name="ignoreImage"> Skip Image
+                  </label>
+                  <label class="checkbox-inline col-xs-2">
+                    <input type="checkbox" ng-model="config.options.ignoreFlags.attachments" name="ignoreAttachments"> Skip Attachments
+                  </label>
+                  <label class="checkbox-inline col-xs-2">
+                    <input type="checkbox" ng-model="config.options.ignoreFlags.comments" name="ignoreComments"> Skip Comments
+                  </label>
+                </div>
+                <div class="form-group">
+                  <div class="col-xs-1 text-center">
+                    <h3><i class="glyphicon glyphicon-refresh glyphicon-refresh-animate" ng-hide="!waitingForResponse"></i></h3>
+                  </div>
+                  <input type="hidden" ng-model="rev.validConnection" name="validConnection">
+
+                  <button class="btn vb-input-field" ng-click="updateConfig()">Update</button>
+                  <button class="btn vb-input-field" ng-click="rev.testConnection()" ng-class="{
+                    'btn-default': rev.validConnection.$valid,
+                    'btn-primary': !rev.validConnection.$invalid
+                  }">Test Connection</button>
+
+                  <button class="btn btn-primary" type="button" ng-click="rev.prepare()" ng-disabled="!rev.validConnection || rev.active">Prepare Batch</button>
+
+                  <button class="btn btn-primary" type="button" ng-click="rev.start()" ng-disabled="!rev.job || rev.active">Start</button>
+
+                  <button class="btn btn-primary" type="button" ng-click="rev.cancel()" ng-disabled="!rev.active">Cancel</button>
+
+                </div>
+              </fieldset>
+              <div class="" ng-if="rev.job">
+                <div class="col-xs-12">
+                  <vb-job job="rev.job"></vb-job>
+                </div>
+              </div>
+            </tab>
+
+          </tabset>
+        </div>
+      </form>
+    </section>
+    <ng-include src="'partials/debug.html'"></ng-include>

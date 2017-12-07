@@ -1,0 +1,32 @@
+<div class="well well-sm">
+  <div class="row progress-main" ng-class="{'ignored-task': job.ignore}">
+    <button class="progress-pre btn btn-sm btn-link" ng-click="toggleDetails()" ng-if="job.content || job.tasks"><i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': !hideDetails, 'glyphicon-chevron-right': hideDetails}" ></i>
+    </button>
+
+
+    <div class="progress-container">
+      <progressbar value="(job.statistics.progress * 100)" type="{{StatusProgressTypeMap[job.status]}}">
+        <span class="badge pull-left">{{job.statistics.progress * 100 | number:0}}% {{job.status}}</span>
+        <div class="progress-label" ng-class="(job.statistics.progress > 0.5) && 'pull-right'">
+          <span>{{job.statistics.current || job.label || job.type}}</span>
+          <span ng-if="job.type === 'VendorExportJob'"> ({{job.statistics.index}} / {{job.statistics.total}})</span>
+
+        </div>
+      </progressbar>
+    </div>
+
+    <div class="progress-post">
+      <button ng-show="job.status == 'waiting'" class="btn btn-sm btn-warning ignore-enable-button" ng-click="ignore(job.taskId, true)">Ignore</button>
+      <button ng-show="job.ignore" class="btn btn-sm btn-success ignore-disable-button" ng-click="ignore(job.taskId, false)">Enable</button>
+      <button ng-show="job.status == 'active'" class="btn btn-sm btn-danger cancel-button" ng-click="cancel(job.taskId)">Cancel</button>
+      <button ng-show="job.status == 'complete'" class="btn btn-sm btn-default close" ng-click="archive(job.taskId)">&times;</button>
+    </div>
+
+  </div>
+  <div class="details" collapse="hideDetails">
+    <vb-content ng-if="job.content" content="job.content"></vb-content>
+    <div ng-repeat="(taskId, task) in job.tasks">
+      <vb-uptask taskLabel="{{taskId}}" task="task"></vb-uptask>
+    </div>
+  </div>
+</div>

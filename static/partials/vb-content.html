@@ -1,0 +1,44 @@
+<content>
+    <!-- ng-if="content.never"
+    <div class="col-xs-2" ng-if="content.never">
+      <input type="checkbox" ng-model="content.markedForImport" ng-change="toggleContentImport()"
+    </input>
+    </div>
+  -->
+      <details>
+        <summary>
+          <h5 class="clearfix">
+            <div class="inline-block pull-left">
+              {{content.title}}
+            </div>
+            <div class="inline-block pull-right">
+              <label class="label label-primary inline-block">Cisco ID: <span>{{content.vendorId}}</span></label>
+              <label class="label label-success inline-block">Rev ID: <span>{{content.videoId}}</span></label>
+              <label class="label label-default inline-block"><span>{{content.usergroups ? 'Private' : 'Public'}}</span></label>
+              <span class="label label-default inline-block" ng-if="content.transcript">Transcript
+              </span>
+              <span class="label label-default inline-block" ng-if="content.attachments">{{content.attachments.length}} Attachments</span>
+              <span class="label label-default inline-block" ng-if="content.comments">
+                {{content.comments.length}} Comments
+              </span>
+              <span class="label label-info inline-block" ng-if="content.pulseAnalytics">Pulse Analytics
+              </span>
+            </div>
+          </h5>
+
+        </summary>
+
+        <div class="row">
+          <author class="col-sm-6"><label>Author:</label>{{content.author}}</author>
+          <date class="col-sm-6"><label>Uploaded:</label>{{content.whenUploaded | date}}</date>
+          <div ng-if="content.prettyCategories" class="col-sm-6"><label>Categories:</label>{{content.prettyCategories}}</div>
+          <div ng-if="content.tags" class="col-sm-6"><label>Tags:</label>{{content.tags}}</div>
+        </div>
+        <div>
+
+          <p>{{content.description}}</p>
+
+        </div>
+
+    </details>
+</content>

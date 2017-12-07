@@ -1,0 +1,16 @@
+<section class="panel panel-default tabbed-panel">
+  <div class="panel-heading" ng-click="isLogCollapsed = !isLogCollapsed">
+    <h4>Debug</h4>
+  </div>
+  <div class="panel-body" collapse="isLogCollapsed">
+    <section ng-controller="ReplController">
+      <ul id="repl-output" class="CodeMirror cm-s-neat">
+      </ul>
+      <div id="repl-input">
+        <i class="glyphicon glyphicon-console prompt"></i>
+        <div ui-codemirror="{ onLoad : replInputLoaded }"
+                      ui-codemirror-opts="inputOptions"></div>
+      </div>
+    </section>
+  </div>
+</section>

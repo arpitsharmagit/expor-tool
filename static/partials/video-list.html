@@ -1,0 +1,85 @@
+<div class="container-fluid">
+  <div class="row">
+		<div class="col-sm-12">
+			<div class="file-list-wrap">
+				<div class="file-list">
+					<div class="file-list-row file-list-header flex-container flex-table">
+						<div class="file-list-header-col table-cell flex-fill text-align-left flex-3">
+							<a
+								ng-class="{
+									active: sortField === 'title',
+									up: sortAscending,
+									disabled: isTableSortingDisabled
+								}"
+								ng-click="sortVideos('title')">
+								Name<span class="caret"></span>
+							</a>
+						</div>
+						<div class="file-list-header-col table-cell mobile-hidden">
+							<a
+									ng-class="{
+									active: sortField === 'whenUploaded',
+									up: sortAscending,
+									disabled: isTableSortingDisabled
+								}"
+									ng-click="sortVideos('whenUploaded', true)">
+								UploadDate<span class="caret"></span>
+							</a>
+						</div>
+
+						<div class="file-list-header-col table-cell mobile-hidden">
+							<a ng-class="{
+									active: sortField === 'category',
+									up: sortAscending,
+									disabled: isTableSortingDisabled
+								}"
+							   ng-click="sortVideos('category')">
+								Category
+								<span class="caret"></span>
+							</a>
+						</div>
+
+						<div class="file-list-header-col table-cell mobile-hidden">
+							<a ng-class="{
+									active: sortField === 'status',
+									up: sortAscending,
+									disabled: isTableSortingDisabled
+								}"
+							   ng-click="sortVideos('status')">
+								Status
+								<span class="caret"></span>
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div ng-repeat="video in videos"
+				     class="file-list-row flex-container flex-table"
+				     ng-class="{
+				        'uploading': isUploading(video),
+						    'not-ready': isUploading(video) || isProcessing(video),
+						    'processing-error': processingFailed(video),
+						    'inactive': video.isActive === false,
+						 }">
+
+					<div class="flex-fill primary-cell table-cell flex-3 thumbnail-cell">
+						<div class="file-icon file-icon-library-hack">
+							<div class="image-wrapper">
+								<img ng-src="{{video.thumbnailUri||'/test/assets/thumb.jpg'}}">
+							</div>
+						</div>
+
+						<span class="file-name">{{ video.title }}</span>
+					</div>
+
+					<div class="table-cell">
+						{{ video.whenUploaded | date }}
+					</div>
+					<div class="table-cell">{{video.category}}</div>
+					<div class="table-cell">
+						{{ video.status}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

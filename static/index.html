@@ -1,0 +1,135 @@
+<html ng-app="migrateApp">
+<head>
+  <title>Show And Share Migration Tool</title>
+  <link rel="stylesheet" type="text/css" href="css/shared.min.css">
+  <link rel="stylesheet" type="text/css" href="css/portal.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="stylesheet" type="text/css" href="css/codemirror.css">
+  <link rel="stylesheet" type="text/css" href="css/codemirror-theme-neat.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script>
+    var $ = window.$ = window.jQuery = require('./js/jquery');
+  </script>
+  <script type="text/javascript" src="js/lodash.js"></script>
+  <script type="text/javascript" src="js/q.js"></script>
+
+</head>
+<body class="admin">
+
+
+  <div class="container-fluid" id="data-section" ng-controller="DataCtrl">
+
+    <ng-include src="'partials/config.html'"></ng-include>
+
+
+    <div class="row">
+      <div class="col-sm-12">
+        <section class="panel panel-default">
+          <div class="panel-heading" ng-click="isJobCollapsed = !isJobCollapsed">
+            <h4>Tasks</h4>
+          </div>
+          <div class="panel-body" collapse="isJobCollapsed">
+            <div class="container">
+              <ul class="list-group">
+                <li class="list-group-item" >
+                  <vb-job job="job" ng-repeat="(taskId, job) in data.job"></vb-job>
+                </li>
+              </ul>
+            </div>
+<!--
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="(vendorId, content) in data.content">
+                <vb-content></vb-content>
+              </li>
+            </ul>
+-->
+          </div>
+        </section>
+      </div>
+      <div class="col-sm-12">
+        <section class="panel panel-default" content-section id="import-content">
+          <div class="panel-heading">
+            <div class="row">
+              <h4 class="col-sm-6" ng-click="isVidCollapsed = !isVidCollapsed">Content</h4>
+              <div class="col-sm-6"><label>Query: <input ng-model="contentSearchText"></label>
+                <button class="btn" ng-click="loadContent()">Load</button>
+              </div>
+            </div>
+          </div>
+          <div class="panel-body data-panel" collapse="isVidCollapsed">
+
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="content in data.content | searchForContent:contentSearchText">
+                <vb-content content="content" vendorId="content.vendorId"></vb-content>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <section class="panel panel-default" id="category-section">
+            <div class="panel-heading" ng-click="isCatCollapsed = !isCatCollapsed">
+              <h4>Categories</h4>
+            </div>
+            <div class="panel-body data-panel" collapse="isCatCollapsed">
+
+              <ul class="list-group">
+                <li class="list-group-item" ng-repeat="category in data.category">
+                  {{category.path}}
+                </li>
+              </ul>
+            </div>
+          </section>
+        </div>
+        <div class="col-sm-6">
+          <section class="panel panel-default">
+            <div class="panel-heading" ng-click="isUserCollapsed = !isUserCollapsed">
+              <h4>Users</h4>
+            </div>
+            <div class="panel-body data-panel" id="user-section" collapse="isUserCollapsed">
+
+              <ul class="list-group">
+                <li class="list-group-item" ng-repeat="user in data.user">
+                  {{user.username}}
+                </li>
+              </ul>
+            </div>
+            <div class="panel-heading" ng-click="isTeamCollapsed = !isTeamCollapsed">
+              <h4>User Groups</h4>
+            </div>
+            <div class="panel-body" id="team-section" collapse="isTeamCollapsed">
+
+              <ul class="list-group">
+                <li class="list-group-item" ng-repeat="team in data.team">
+                  {{team.name}}
+                </li>
+              </ul>
+            </div>
+          </section>
+
+        </div>
+
+    </div>
+  </div>
+
+    <!--
+-->
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/angular.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap.js"></script>
+  <script type="text/javascript" src="js/ui-bootstrap-tpls.js"></script>
+  <script type="text/javascript" src="js/codemirror.js"></script>
+  <script type="text/javascript" src="js/codemirror-mode-javascript.js"></script>
+  <script type="text/javascript" src="js/ui-codemirror.js"></script>
+
+  <script type="text/javascript" src="migrate-app.js"></script>
+  <script type="text/javascript" src="ConfigController.js"></script>
+  <script type="text/javascript" src="InputDirective.js"></script>
+  <script type="text/javascript" src="ContentDirective.js"></script>
+  <script type="text/javascript" src="JobDirective.js"></script>
+  <script type="text/javascript" src="ReplController.js"></script>
+</body>
+</html>

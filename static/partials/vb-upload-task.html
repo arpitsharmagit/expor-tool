@@ -1,0 +1,17 @@
+<div class="row progress-main clearfix" ng-class="'bg-' + StatusProgressTypeMap[task.status]">
+  <label class="progress-pre">{{task.label || task.type}}</label>
+  <div class="progress-container">
+    <progressbar value="(task.statistics.progress * 100)" type="{{StatusProgressTypeMap[task.status]}}">
+      <span class="badge pull-left">{{task.statistics.progress * 100 | number:0}}% {{task.ignore ? 'ignored' : task.status}}</span>
+      <div class="progress-label" ng-if="task.type === 'ContentJob'" ng-class="(task.statistics.progress > 0.5) && 'pull-right'">{{task.content.title}} ({{task.content.whenUploaded | date}})</div>
+    </progressbar>
+  </div>
+
+  <div class="progress-post">
+    <button ng-show="task.status == 'waiting'" class="btn btn-sm btn-warning ignore-enable-button" ng-click="ignore(task.taskId, true)">Ignore</button>
+    <button ng-show="task.ignore" class="btn btn-sm btn-success ignore-disable-button" ng-click="ignore(task.taskId, false)">Enable</button>
+    <button ng-show="task.status == 'active'" class="btn btn-sm btn-danger cancel-button" ng-click="cancel(task.taskId)">Cancel</button>
+    <button ng-show="task.status == 'complete'" class="btn btn-sm btn-default close" ng-click="archive(task.taskId)">&times;</button>
+  </div>
+
+</div>

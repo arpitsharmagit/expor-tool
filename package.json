@@ -1,0 +1,6 @@
+{
+  "name": "export-tool",
+  "productName": "Export Tool",
+  "version": "0.7.5",
+  "main": "main.js"
+}

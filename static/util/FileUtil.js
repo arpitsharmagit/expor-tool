@@ -1,0 +1,73 @@
+"use strict";
+
+var _ = require("lodash");
+
+var FileUtil = {
+
+	imageFileExtensions: ["jpg", "gif", "png", "svg"],
+	isImageFile: function isImageFile(extension) {
+		return _.contains(this.imageFileExtensions, extension);
+	},
+
+	videoFileExtensions: ["avi", "m4v", "f4v", "flv", "swf", "mpg", "ts", "mp4", "avi", "wmv", "asf", "mov", "mkv"],
+	isVideoFile: function isVideoFile(extension) {
+		return _.contains(this.videoFileExtensions, extension);
+	},
+
+	presentationFileExtensions: ["ppt", "pptx"],
+	isPresentationFile: function isPresentationFile(extension) {
+		return _.contains(this.presentationFileExtensions, extension);
+	},
+
+	documentFileExtensions: ["doc", "docx", "txt", "pdf"],
+	isDocumentFile: function isDocumentFile(extension) {
+		return _.contains(this.documentFileExtensions, extension);
+	},
+
+	spreadsheetFileExtensions: ["xls", "xlsx", "csv"],
+	isSpreadsheetFile: function isSpreadsheetFile(extension) {
+		return _.contains(this.spreadsheetFileExtensions, extension);
+	},
+
+	archiveFileExtensions: ["zip", "rar", "7z"],
+	isArchiveFile: function isArchiveFile(extension) {
+		return _.contains(this.archiveFileExtensions, extension);
+	},
+
+	parseFileName: function parseFileName(fileName) {
+		var matches = /^(.*)\.([^.]*)$/.exec(fileName);
+		if (matches) {
+			return {
+				prettyName: matches[1],
+				extension: matches[2].toLowerCase()
+			};
+		}
+	},
+
+	formatFileSize: function formatFileSize(size, numDecimalPlaces) {
+		if (_.isString(size)) {
+			size = parseInt(size, 10);
+		}
+		if (size < 0 || size !== 0 && !size) {
+			return size;
+		}
+
+		var units = [" Bytes", "KB", "MB", "GB", "TB" //...
+		];
+
+		for (var i = 0, len = units.length - 1; i < len; i++) {
+			if (size < 1024) {
+				break;
+			}
+			size /= 1024;
+		}
+
+		numDecimalPlaces = numDecimalPlaces || 2;
+		var tens = Math.pow(10, numDecimalPlaces);
+
+		return Math.floor(size * tens) / tens + "" + units[i];
+	}
+};
+
+module.exports = FileUtil;
+//# sourceMappingURL=FileUtil.js.map
